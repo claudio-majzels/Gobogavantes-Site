@@ -1,0 +1,10 @@
+# Local-only instructions and handoff notes
+CLAUDE.md
+HANDOFF.md
+
+# macOS
+.DS_Store
+
+# Claude / agents local state
+.agents/
+skills-lock.json

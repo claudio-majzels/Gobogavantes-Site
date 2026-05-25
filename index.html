@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bogavantes — Socio de operaciones con IA</title>
+<meta name="description" content="No te entrego un informe. Me quedo a tu lado. Uso IA y automatización para resolver lo que frena tu negocio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Editorial Fogo — branco + preto + laranja-fogo */
+  --ink:#FFFFFF;            /* fundo principal (branco puro) */
+  --surface:#FFFFFF;        /* cards: branco com borda preta */
+  --surface-2:#FFFFFF;      /* seções alternadas: branco (separadas por hairline) */
+  --amber:#FF3D00;          /* laranja-fogo — acento único de interação */
+  --amber-bright:#FF5722;   /* hover do laranja */
+  --teal:#0A0A0A;           /* segundo acento absorvido em preto */
+  --paper:#0A0A0A;          /* texto preto (quase-preto) */
+  --paper-dim:#6B6B6B;      /* texto secundário cinza médio */
+  --line:rgba(10,10,10,0.14); /* hairlines sutis pretas */
+  --line-bold:#0A0A0A;      /* hairlines pretas duras */
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--amber);color:var(--paper)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+section{position:relative}
+
+/* atmosphere killed — flat editorial */
+.grain{display:none}
+
+/* ---- nav ---- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 32px;
+  transition:background .3s ease,padding .3s ease,border-color .3s ease;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(8px);
+  padding:14px 32px;
+  border-bottom:1px solid var(--line-bold);
+}
+.brand{
+  font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:.02em;
+  display:flex;align-items:center;gap:11px;
+}
+.brand .dot{
+  width:9px;height:9px;border-radius:50%;background:var(--amber);
+}
+.nav-right{display:flex;align-items:center;gap:26px}
+.nav-links{display:flex;gap:26px}
+.nav-links a{
+  font-size:14px;color:var(--paper-dim);transition:color .2s;
+  font-weight:500;
+}
+.nav-links a:hover{color:var(--paper)}
+.lang{
+  display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;
+  padding:3px;background:rgba(255,255,255,.02);
+}
+.lang button{
+  background:none;border:none;color:var(--paper-dim);cursor:pointer;
+  font-family:var(--sans);font-size:12px;font-weight:600;
+  padding:5px 11px;border-radius:999px;transition:all .2s;letter-spacing:.04em;
+}
+.lang button.active{background:var(--amber);color:var(--paper)}
+.nav-cta{
+  font-size:13px;font-weight:600;color:var(--ink);background:var(--paper);
+  padding:9px 17px;border-radius:999px;transition:transform .15s;
+}
+/* nav-cta: white text on black bg in new system (var(--ink)=white, var(--paper)=black) */
+.nav-cta:hover{transform:translateY(-1px)}
+
+/* ---- hero ---- */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:160px 0 100px;position:relative;overflow:hidden;
+  border-bottom:1px solid var(--line-bold);
+}
+.hero .wrap{position:relative;z-index:2;width:100%}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.hero-img{
+  position:relative;aspect-ratio:4/5;border:1px solid var(--line-bold);
+  background:var(--amber);overflow:hidden;
+}
+.hero-img img{display:block;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(1.08);mix-blend-mode:multiply;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--amber);
+  margin-bottom:30px;
+  border:1px solid rgba(255,61,0,.35);border-radius:999px;
+  padding:7px 15px;
+}
+.eyebrow::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--amber);
+  animation:pulse 2.4s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(2.7rem,6.4vw,5.1rem);
+  line-height:1.04;letter-spacing:-.018em;
+  max-width:16ch;margin-bottom:30px;
+}
+h1 em{font-style:italic;color:var(--amber-bright)}
+.hero-sub{
+  font-size:clamp(1.05rem,2vw,1.32rem);
+  color:var(--paper-dim);max-width:54ch;line-height:1.6;
+  margin-bottom:42px;
+}
+.hero-sub strong{color:var(--paper);font-weight:600}
+.btn-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:11px;
+  font-weight:600;font-size:15.5px;
+  padding:16px 28px;border-radius:999px;
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.btn-primary{
+  background:var(--amber);color:var(--paper);
+}
+.btn-primary:hover{transform:translateY(-2px);background:var(--amber-bright)}
+.btn-ghost{color:var(--paper);border:1px solid var(--line-bold)}
+.btn-ghost:hover{background:var(--paper);color:var(--ink);transform:translateY(-2px)}
+.btn svg{width:18px;height:18px}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+
+/* ---- section heading ---- */
+.sec-head{margin-bottom:58px;max-width:64ch}
+.sec-tag{
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-tag::before{content:"";width:30px;height:1px;background:var(--amber)}
+h2{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(2rem,4.2vw,3.1rem);
+  line-height:1.1;letter-spacing:-.015em;
+}
+h2 em{font-style:italic;color:var(--amber-bright)}
+.sec-intro{color:var(--paper-dim);font-size:1.1rem;margin-top:20px;max-width:58ch}
+
+/* ---- pain ---- */
+.pain{padding:120px 0;border-top:1px solid var(--line-bold)}
+.pain-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.pain-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:18px;padding:30px;
+  transition:transform .25s ease,border-color .25s ease;
+  position:relative;overflow:hidden;
+}
+.pain-card:hover{transform:translateY(-4px);border-color:var(--amber)}
+.pain-card .q{
+  font-family:var(--serif);font-style:italic;font-size:1.32rem;
+  line-height:1.35;color:var(--paper);
+}
+.pain-card .n{
+  font-family:var(--mono);font-size:12px;color:var(--amber);
+  margin-bottom:16px;letter-spacing:.1em;
+}
+
+/* ---- category / vs ---- */
+.category{padding:120px 0;background:var(--surface-2);border-top:1px solid var(--line-bold)}
+.cat-statement{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(1.7rem,3.6vw,2.7rem);line-height:1.28;
+  letter-spacing:-.01em;max-width:20ch;margin-bottom:54px;
+}
+.cat-statement b{color:var(--amber-bright);font-weight:500;font-style:italic}
+.vs{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border:1px solid var(--line);border-radius:20px;overflow:hidden;
+}
+.vs-col{padding:14px 0}
+.vs-col.them{background:transparent}
+.vs-col.us{background:rgba(255,61,0,.06)}
+.vs-head{
+  padding:22px 32px 18px;font-weight:700;font-size:13px;
+  letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid var(--line);
+}
+.vs-col.them .vs-head{color:var(--paper-dim)}
+.vs-col.us .vs-head{color:var(--amber)}
+.vs-row{
+  padding:16px 32px;font-size:15.5px;display:flex;gap:13px;
+  align-items:flex-start;line-height:1.45;
+}
+.vs-row svg{width:17px;height:17px;flex-shrink:0;margin-top:3px}
+.vs-col.them .vs-row{color:var(--paper-dim)}
+.vs-col.us .vs-row{color:var(--paper)}
+
+/* ---- products ---- */
+.products{padding:120px 0;border-top:1px solid var(--line-bold)}
+.journey{
+  display:flex;align-items:center;gap:14px;margin-bottom:46px;
+  font-family:var(--mono);font-size:13px;color:var(--paper-dim);
+  flex-wrap:wrap;
+}
+.journey b{color:var(--amber-bright);font-weight:500}
+.journey .arr{color:var(--amber)}
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.prod{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:20px;padding:34px 30px;
+  display:flex;flex-direction:column;
+  transition:transform .25s ease,border-color .25s ease;
+  position:relative;overflow:hidden;
+}
+.prod:hover{transform:translateY(-6px);border-color:var(--amber)}
+.prod-step{
+  font-family:var(--mono);font-size:12px;color:var(--amber);
+  letter-spacing:.1em;margin-bottom:20px;
+}
+.prod-name{
+  font-family:var(--serif);font-size:1.85rem;font-weight:500;
+  margin-bottom:7px;
+}
+.prod-kicker{
+  font-size:13.5px;color:var(--amber-bright);font-weight:600;
+  margin-bottom:18px;letter-spacing:.01em;
+}
+.prod-desc{color:var(--paper-dim);font-size:15px;line-height:1.6;margin-bottom:22px}
+.prod-feat{list-style:none;margin-bottom:26px;display:flex;flex-direction:column;gap:10px}
+.prod-feat li{
+  font-size:14px;display:flex;gap:10px;align-items:flex-start;
+  color:var(--paper);
+}
+.prod-feat li::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--amber);
+  margin-top:8px;flex-shrink:0;
+}
+.prod-link{
+  margin-top:auto;font-weight:600;font-size:14.5px;color:var(--amber-bright);
+  display:flex;align-items:center;gap:8px;transition:gap .2s;
+}
+.prod:hover .prod-link{gap:13px}
+
+/* ---- capabilities ---- */
+.caps{padding:110px 0;background:var(--surface-2);border-top:1px solid var(--line-bold)}
+.cap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:14px}
+.cap{
+  border:1px solid var(--line);border-radius:16px;padding:26px 22px;
+  background:var(--surface);transition:all .25s ease;
+}
+.cap:hover{border-color:var(--amber);transform:translateY(-4px)}
+.cap-ic{
+  width:42px;height:42px;border-radius:11px;
+  background:rgba(255,61,0,.12);display:flex;align-items:center;
+  justify-content:center;margin-bottom:18px;
+}
+.cap-ic svg{width:22px;height:22px;stroke:var(--amber)}
+.cap h3{font-size:16px;font-weight:700;margin-bottom:8px;line-height:1.3}
+.cap p{font-size:13.5px;color:var(--paper-dim);line-height:1.55}
+.stack-note{
+  margin-top:34px;font-family:var(--mono);font-size:12.5px;
+  color:var(--paper-dim);text-align:center;letter-spacing:.04em;
+}
+.stack-note span{color:var(--amber-bright)}
+
+/* ---- sweet spot / venn ---- */
+.sweet{padding:120px 0;border-top:1px solid var(--line-bold)}
+.sweet-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.venn-stage{
+  position:relative;height:420px;display:flex;align-items:center;
+  justify-content:center;
+}
+.venn{position:relative;width:380px;height:300px}
+.circle{
+  position:absolute;width:240px;height:240px;border-radius:50%;
+  top:30px;display:flex;align-items:center;justify-content:center;
+  text-align:center;transition:transform 1.1s cubic-bezier(.22,1,.36,1);
+  border:1.5px solid;
+}
+.circle .lbl{
+  font-family:var(--serif);font-size:1.15rem;font-weight:500;
+  padding:0 56px;line-height:1.3;
+}
+.c-prod{
+  left:0;background:transparent;border-color:var(--paper);
+  transform:translateX(60px);mix-blend-mode:multiply;
+}
+.c-biz{
+  right:0;background:rgba(255,61,0,.18);border-color:var(--amber);
+  transform:translateX(-60px);mix-blend-mode:multiply;
+}
+.venn.open .c-prod{transform:translateX(0)}
+.venn.open .c-biz{transform:translateX(0)}
+.venn-core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.4);
+  width:120px;height:120px;border-radius:50%;
+  background:var(--amber);
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;opacity:0;
+  transition:opacity .6s ease .5s,transform .8s cubic-bezier(.22,1,.36,1) .5s;
+  z-index:3;
+}
+.venn.open .venn-core{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.venn-core span{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  color:var(--paper);letter-spacing:.05em;line-height:1.35;padding:0 14px;
+}
+.sweet-copy h2{margin-bottom:24px}
+.sweet-copy p{color:var(--paper-dim);font-size:1.08rem;margin-bottom:18px}
+.sweet-copy p strong{color:var(--paper);font-weight:600}
+
+/* ---- cases ---- */
+.cases{padding:120px 0;background:var(--surface-2);border-top:1px solid var(--line-bold)}
+.case-list{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.case{
+  border:1px solid var(--line);border-radius:18px;
+  background:var(--surface);overflow:hidden;transition:border-color .25s;
+}
+.case.open{border-color:var(--amber)}
+.case-bar{
+  padding:28px 32px;cursor:pointer;display:flex;align-items:center;
+  gap:24px;
+}
+.case-tag{
+  font-family:var(--mono);font-size:11px;color:var(--amber);
+  letter-spacing:.1em;border:1px solid rgba(255,61,0,.4);
+  padding:5px 10px;border-radius:6px;flex-shrink:0;
+}
+.case-title{
+  font-family:var(--serif);font-size:1.5rem;font-weight:500;flex:1;
+}
+.case-title b{color:var(--amber-bright);font-weight:500}
+.case-toggle{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .3s;
+}
+.case.open .case-toggle{background:var(--amber);border-color:var(--amber);transform:rotate(45deg)}
+.case-toggle svg{width:15px;height:15px;transition:stroke .3s}
+.case.open .case-toggle svg{stroke:var(--paper)}
+.case-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .5s cubic-bezier(.4,0,.2,1);
+}
+.case.open .case-body{max-height:640px}
+.case-inner{padding:0 32px 34px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.case-block h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:9px;
+}
+.case-block p{font-size:14.5px;color:var(--paper-dim);line-height:1.6}
+.case-block ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.case-block li{
+  font-size:14px;color:var(--paper);display:flex;gap:9px;align-items:flex-start;
+}
+.case-block li::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--amber);
+  margin-top:8px;flex-shrink:0;
+}
+.case-quote{
+  grid-column:1/-1;font-family:var(--serif);font-style:italic;
+  font-size:1.32rem;line-height:1.4;color:var(--paper);
+  border-left:2px solid var(--amber);padding-left:22px;
+}
+
+/* ---- about ---- */
+.about{padding:120px 0;border-top:1px solid var(--line-bold)}
+.about-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
+.portrait{
+  position:relative;overflow:hidden;
+  border:1px solid var(--line-bold);aspect-ratio:4/5;
+  background:var(--amber);
+}
+.portrait img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(1.08);mix-blend-mode:multiply;
+}
+.portrait .ph{display:none}
+.portrait .mono-c{display:none}
+.about-copy h2{margin-bottom:26px}
+.about-copy p{color:var(--paper-dim);font-size:1.06rem;margin-bottom:18px}
+.about-copy p strong{color:var(--paper);font-weight:600}
+.about-final{
+  font-family:var(--serif);font-style:italic;font-size:1.3rem;
+  color:var(--paper)!important;line-height:1.45;
+  border-left:2px solid var(--amber);padding-left:22px;margin-top:26px;
+}
+.counters{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  margin-top:40px;
+}
+.counter{
+  border:1px solid var(--line);border-radius:14px;padding:22px 16px;
+  text-align:center;background:var(--surface);
+}
+.counter .num{
+  font-family:var(--serif);font-size:2.2rem;font-weight:500;
+  color:var(--amber-bright);line-height:1;
+}
+.counter .cap-l{
+  font-size:12px;color:var(--paper-dim);margin-top:8px;
+  letter-spacing:.03em;
+}
+
+/* ---- faq ---- */
+.faq{padding:110px 0;background:var(--surface-2);border-top:1px solid var(--line-bold)}
+.faq-list{display:flex;flex-direction:column;max-width:820px;margin:8px auto 0}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{
+  padding:26px 4px;cursor:pointer;display:flex;justify-content:space-between;
+  gap:24px;align-items:center;
+}
+.faq-q span{font-size:1.12rem;font-weight:600;font-family:var(--serif)}
+.faq-q .pm{
+  width:26px;height:26px;flex-shrink:0;position:relative;
+}
+.faq-q .pm::before,.faq-q .pm::after{
+  content:"";position:absolute;background:var(--amber);
+  left:50%;top:50%;transition:transform .3s;
+}
+.faq-q .pm::before{width:14px;height:2px;transform:translate(-50%,-50%)}
+.faq-q .pm::after{width:2px;height:14px;transform:translate(-50%,-50%)}
+.faq-item.open .pm::after{transform:translate(-50%,-50%) rotate(90deg);opacity:0}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-item.open .faq-a{max-height:200px}
+.faq-a p{padding:0 4px 26px;color:var(--paper-dim);font-size:15.5px;line-height:1.62}
+
+/* ---- final cta ---- */
+.final{padding:140px 0;text-align:center;position:relative;overflow:hidden;border-top:1px solid var(--line-bold)}
+.final .wrap{position:relative;z-index:2}
+.final h2{margin-bottom:24px;max-width:18ch;margin-left:auto;margin-right:auto}
+.final p{color:var(--paper-dim);font-size:1.15rem;margin-bottom:38px;max-width:46ch;margin-left:auto;margin-right:auto}
+
+/* ---- footer ---- */
+footer{
+  border-top:1px solid var(--line-bold);padding:50px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:20px;
+}
+footer .brand{font-size:19px}
+.foot-meta{font-size:13px;color:var(--paper-dim)}
+.foot-meta a{color:var(--amber-bright)}
+
+/* ---- floating wa ---- */
+.fab{
+  position:fixed;right:24px;bottom:24px;z-index:60;
+  display:flex;align-items:center;gap:11px;
+  background:var(--amber);color:var(--paper);
+  padding:14px 20px;border-radius:999px;font-weight:700;font-size:14.5px;
+  border:1px solid var(--paper);
+  transition:transform .18s ease,background .18s ease;
+}
+.fab:hover{transform:translateY(-3px) scale(1.02);background:var(--amber-bright)}
+.fab svg{width:21px;height:21px}
+
+/* ---- duotone image system ---- */
+.prod-img,.case-img,.brk-img{
+  position:relative;overflow:hidden;
+  background:var(--amber);
+  border:1px solid var(--line-bold);
+}
+.prod-img{aspect-ratio:16/10;margin:-34px -30px 24px;border-left:0;border-right:0;border-top:0}
+.prod-img img,.case-img img,.brk-img img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(1.08);mix-blend-mode:multiply;
+}
+.case-img{aspect-ratio:21/9;margin-bottom:8px;border-radius:14px}
+.brk{padding:80px 32px;border-top:1px solid var(--line-bold);border-bottom:1px solid var(--line-bold)}
+.brk-img{max-width:1180px;margin:0 auto;aspect-ratio:21/9;border-radius:0}
+
+/* ---- responsive ---- */
+@media(max-width:940px){
+  .pain-grid{grid-template-columns:1fr 1fr}
+  .prod-grid{grid-template-columns:1fr}
+  .cap-grid{grid-template-columns:1fr 1fr}
+  .sweet-layout,.about-layout{grid-template-columns:1fr;gap:48px}
+  .counters{grid-template-columns:repeat(2,1fr)}
+  .case-inner{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hero-grid{grid-template-columns:1fr;gap:48px}
+  .hero-img{aspect-ratio:16/10;max-width:560px}
+}
+@media(max-width:620px){
+  body{font-size:16px}
+  .wrap{padding:0 20px}
+  nav{padding:16px 20px}
+  nav.scrolled{padding:12px 20px}
+  .pain-grid,.cap-grid{grid-template-columns:1fr}
+  .vs{grid-template-columns:1fr}
+  .vs-col.them{border-bottom:1px solid var(--line)}
+  .counters{grid-template-columns:1fr 1fr}
+  .case-bar{flex-wrap:wrap;gap:14px}
+  .hero{padding:130px 0 80px}
+  .nav-cta{display:none}
+  .venn{transform:scale(.82)}
+  .case-title{font-size:1.25rem}
+}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="#" class="brand"><span class="dot"></span>Bogavantes</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#productos" data-t="nav1">Servicios</a>
+      <a href="#metodo" data-t="nav2">Por qué yo</a>
+      <a href="#casos" data-t="nav3">Casos</a>
+      <a href="#claudio" data-t="nav4">Claudio</a>
+    </div>
+    <div class="lang">
+      <button data-lang="es" class="active">ES</button>
+      <button data-lang="pt">PT</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <a class="nav-cta wa" data-t="navcta">Hablemos</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow reveal" data-t="eyebrow">Socio de operaciones · IA + automatización</div>
+        <h1 class="reveal d1" data-t="h1"></h1>
+        <p class="hero-sub reveal d2" data-t="herosub"></p>
+        <div class="btn-row reveal d3">
+          <a class="btn btn-primary wa" data-t="herocta1"></a>
+          <a class="btn btn-ghost" href="#casos" data-t="herocta2"></a>
+        </div>
+      </div>
+      <figure class="hero-img reveal d2">
+        <img src="img/hero.jpg" alt="" onerror="this.style.display='none'">
+      </figure>
+    </div>
+  </div>
+</header>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-t="paintag">El problema</div>
+      <h2 data-t="painh2"></h2>
+    </div>
+    <div class="pain-grid" id="painGrid"></div>
+  </div>
+</section>
+
+<!-- CATEGORY -->
+<section class="category" id="categoria">
+  <div class="wrap">
+    <div class="sec-tag reveal" data-t="cattag">La diferencia</div>
+    <p class="cat-statement reveal d1" data-t="catstatement"></p>
+    <div class="vs reveal d2">
+      <div class="vs-col them">
+        <div class="vs-head" data-t="vsthem">Consultor tradicional</div>
+        <div id="vsThem"></div>
+      </div>
+      <div class="vs-col us">
+        <div class="vs-head">Bogavantes</div>
+        <div id="vsUs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="productos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-t="prodtag">Cómo trabajo</div>
+      <h2 data-t="prodh2"></h2>
+      <p class="sec-intro" data-t="prodintro"></p>
+    </div>
+    <div class="journey reveal d1" id="journey"></div>
+    <div class="prod-grid" id="prodGrid"></div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="caps">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-t="captag">Capacidades</div>
+      <h2 data-t="caph2"></h2>
+    </div>
+    <div class="cap-grid" id="capGrid"></div>
+    <p class="stack-note reveal" data-t="stacknote"></p>
+  </div>
+</section>
+
+<!-- SWEET SPOT -->
+<section class="sweet" id="metodo">
+  <div class="wrap">
+    <div class="sweet-layout">
+      <div class="venn-stage reveal">
+        <div class="venn" id="venn">
+          <div class="circle c-prod"><span class="lbl" data-t="vennprod"></span></div>
+          <div class="circle c-biz"><span class="lbl" data-t="vennbiz"></span></div>
+          <div class="venn-core"><span data-t="venncore"></span></div>
+        </div>
+      </div>
+      <div class="sweet-copy reveal d1">
+        <div class="sec-tag" data-t="sweettag">El sweet spot</div>
+        <h2 data-t="sweeth2"></h2>
+        <p data-t="sweetp1"></p>
+        <p data-t="sweetp2"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="cases" id="casos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-t="casetag">Casos reales</div>
+      <h2 data-t="caseh2"></h2>
+      <p class="sec-intro" data-t="caseintro"></p>
+    </div>
+    <div class="case-list" id="caseList"></div>
+  </div>
+</section>
+
+<!-- EDITORIAL BREAK -->
+<section class="brk">
+  <figure class="brk-img"><img src="img/break.jpg" alt="" onerror="this.parentElement.style.display='none'"></figure>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="claudio">
+  <div class="wrap">
+    <div class="about-layout">
+      <div class="portrait reveal">
+        <img src="img/claudio.jpg" alt="Claudio Majzels" onerror="this.style.display='none'">
+      </div>
+      <div class="about-copy reveal d1">
+        <div class="sec-tag" data-t="abouttag">Quién está a tu lado</div>
+        <h2 data-t="abouth2"></h2>
+        <div id="aboutBody"></div>
+        <p class="about-final" data-t="aboutfinal"></p>
+        <div class="counters" id="counters"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <div class="sec-tag" style="justify-content:center" data-t="faqtag">Dudas</div>
+      <h2 data-t="faqh2"></h2>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="wrap">
+    <div class="sec-tag reveal" style="justify-content:center" data-t="finaltag">Empecemos</div>
+    <h2 class="reveal d1" data-t="finalh2"></h2>
+    <p class="reveal d2" data-t="finalp"></p>
+    <div class="reveal d3" style="display:flex;justify-content:center">
+      <a class="btn btn-primary wa" data-t="finalcta"></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;width:100%">
+    <a href="#" class="brand"><span class="dot"></span>Bogavantes</a>
+    <div class="foot-meta">
+      <span data-t="footmeta"></span> · <a class="wa">+34 632 047 675</a>
+    </div>
+  </div>
+</footer>
+
+<a class="fab wa">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.2-3.9-.8-3.3-1.3-5.4-4.6-5.6-4.8-.2-.2-1.3-1.8-1.3-3.4 0-1.6.8-2.4 1.1-2.7.3-.3.7-.4.9-.4h.6c.2 0 .5 0 .7.6l.9 2.3c.1.2.1.4 0 .6l-.4.7c-.1.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.8 1.7.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2.2 1.1c.3.1.5.2.6.3.1.2.1.9-.1 1.6z"/></svg>
+  <span data-t="fab"></span>
+</a>
+
+<script>
+/* ============ CONTENT — 3 languages ============ */
+const WA={
+  es:"https://wa.me/34632047675?text=%C2%A1Hola%20Claudio!%20Vi%20la%20web%20de%20Bogavantes%20y%20quiero%20hablar%20sobre%20mi%20empresa.",
+  pt:"https://wa.me/34632047675?text=Ol%C3%A1%20Claudio!%20Vi%20o%20site%20da%20Bogavantes%20e%20quero%20conversar%20sobre%20a%20minha%20empresa.",
+  en:"https://wa.me/34632047675?text=Hi%20Claudio!%20I%20saw%20the%20Bogavantes%20site%20and%20I%27d%20like%20to%20talk%20about%20my%20company."
+};
+
+const T={
+es:{
+  nav1:"Servicios",nav2:"Por qué yo",nav3:"Casos",nav4:"Claudio",navcta:"Hablemos",
+  eyebrow:"Socio de operaciones · IA + automatización",
+  h1:"Tu empresa todavía trabaja como en <em>2015</em>.",
+  herosub:"No es culpa tuya. Es que hasta ahora <strong>nadie se quedó a tu lado</strong> para cambiarlo de verdad. Uso IA y automatización para resolver lo que frena tu negocio — y me quedo contigo mientras evoluciona.",
+  herocta1:"Hablemos — la primera conversación es gratis",
+  herocta2:"Ver casos reales",
+  paintag:"El problema",
+  painh2:"Sabes que algo tiene que cambiar. Pero <em>algo</em> te frena.",
+  pain:[
+    ["01","\u201cNo tengo tiempo. El día a día se lo come todo.\u201d"],
+    ["02","\u201cNo sé por dónde empezar. Hay demasiada tecnología.\u201d"],
+    ["03","\u201cYa contraté una consultoría y no sirvió de nada.\u201d"],
+    ["04","\u201cTengo miedo de gastar y no ver retorno.\u201d"],
+    ["05","\u201cMi equipo no adopta las herramientas nuevas.\u201d"],
+    ["06","\u201cNo me fío de quien nunca fue emprendedor.\u201d"]
+  ],
+  cattag:"La diferencia",
+  catstatement:"No te entrego un informe. Me <b>quedo a tu lado</b> hasta que la cosa funcione de verdad.",
+  vsthem:"Consultor tradicional",
+  vs:[
+    ["Te entrega un documento","Te entrega resultados funcionando"],
+    ["Trabaja desde fuera","Trabaja dentro, contigo"],
+    ["El proyecto empieza y acaba","Se queda mientras lo necesites"],
+    ["Caro y genérico","Quirúrgico y a la medida de tu empresa"],
+    ["Nunca fue emprendedor","Ya estuvo exactamente en tu lugar"]
+  ],
+  prodtag:"Cómo trabajo",
+  prodh2:"Tres formas de empezar. <em>Una sola dirección.</em>",
+  prodintro:"Entras pequeño y sin riesgo. Subes cuando ves que funciona. Sin sorpresas, sin ataduras.",
+  journey:["Radiografía","El Salto","A Tu Lado"],
+  prods:[
+    ["Paso 01","Radiografía","El diagnóstico",
+     "Dos semanas dentro de tu operación para ver con claridad qué te está costando dinero — y dónde está la oportunidad real.",
+     ["Inmersión en tus procesos actuales","Mapa de cuellos de botella","3 mejoras priorizadas por impacto"],
+     "Empezar por aquí"],
+    ["Paso 02","El Salto","La implementación",
+     "Un problema resuelto de principio a fin. Escopo cerrado, plazo claro. Lo construyo, lo dejo funcionando y acompaño la adopción.",
+     ["WhatsApp que vende solo, un agente de IA, un sistema sustituido","Plazo y alcance definidos desde el día uno","Acompañamiento incluido tras la entrega"],
+     "Diseñar el alcance"],
+    ["Paso 03","A Tu Lado","El acompañamiento",
+     "El socio de operaciones presente todos los meses. Evoluciono tu empresa de forma continua — por menos de lo que cuesta un sénior a jornada completa.",
+     ["Reuniones estratégicas cada semana","Implementación continua y mejora","Acceso directo por WhatsApp"],
+     "Ver si encajamos"]
+  ],
+  captag:"Capacidades",
+  caph2:"Lo que <em>resuelvo</em>",
+  caps:[
+    ["WhatsApp que vende","Flujos de venta y atención automatizados sobre la API de WhatsApp Business.","chat"],
+    ["Agentes de IA","Empleados digitales que ejecutan tareas reales: venta, cualificación, soporte.","bot"],
+    ["Adiós sistema legado","Sustitución progresiva y quirúrgica de sistemas viejos, sin parar la operación.","layers"],
+    ["Procesos sin desperdicio","Automatizo las tareas repetitivas que se comen el tiempo del equipo.","zap"],
+    ["Transformación real","No es comprar una herramienta. Es cambiar cómo opera la empresa.","compass"]
+  ],
+  stacknote:"Construido sobre <span>Claude API · n8n · Supabase · WhatsApp Business API · Node.js</span>",
+  sweettag:"El sweet spot",
+  vennprod:"Visión de producto",
+  vennbiz:"Cabeza de negocio",
+  venncore:"Donde vivo yo",
+  sweeth2:"La mayoría elige <em>una</em> de las dos. Yo vivo en las dos.",
+  sweetp1:"El consultor de IT entiende de sistemas, pero no de negocio. El consultor de gestión entiende de procesos, pero no de tecnología. Y tú acabas traduciendo entre los dos.",
+  sweetp2:"Yo construyo producto, entiendo de ROI y sigo siendo emprendedor hoy. <strong>Ese cruce es exactamente lo que tu empresa necesita</strong> — y lo que casi ninguna consultoría tiene.",
+  casetag:"Casos reales",
+  caseh2:"No son <em>teoría</em>. Lo construí con mis manos.",
+  caseintro:"Cada caso es algo que diseñé, construí y dejé funcionando — en mi propia empresa o en corporaciones de escala real.",
+  cases:[
+    ["Biffy","WhatsApp Commerce construido <b>desde cero</b>",
+     "Contexto","Soy fundador de Biffy, marca de carne grass-fed premium en Río de Janeiro. La operación giraba en torno a WhatsApp manual, con el equipo respondiendo todo a mano.",
+     "Qué construí",["Canal de ventas 100% por WhatsApp con flujo de pedidos","Catálogo digital integrado","Automatización de confirmación, cobro y entrega","Base de clientes con histórico de compras"],
+     "El resultado","Una operación de ventas funcionando sin equipo comercial dedicado, con trazabilidad total y base para campañas de reactivación segmentadas.",
+     "Construí desde cero el canal de ventas de mi propia empresa. Es exactamente eso lo que hago por tu negocio."],
+    ["Jerry","El <b>agente de IA</b> que cualifica y convierte",
+     "Contexto","Biffy recibía leads de varios canales, sin criterio de priorización ni seguimiento consistente. Los leads se enfriaban.",
+     "Qué construí",["Agente de IA sobre Claude API + n8n + Supabase","Clasificación de leads por temperatura: Hirviendo / Caliente / Pelando","Flujos de WhatsApp distintos por nivel","Dashboard Kanban con estado en tiempo real"],
+     "El resultado","Cero leads perdidos por falta de seguimiento. El equipo humano se enfoca solo en lo cualificado. Ciclo de venta más corto.",
+     "Jerry no es un chatbot. Es un agente que trabaja mientras tú duermes."],
+    ["Shell Box","Producto digital para <b>2 millones</b> de usuarios",
+     "Contexto","Lideré la construcción de Shell Box en Shell Brasil — la app de pago de combustible desde el móvil.",
+     "Qué construí",["Producto digital de cero a 2M+ de usuarios activos","Integración de pago en estaciones Shell de todo Brasil","Innovación registrada en patente de pago móvil"],
+     "Por qué te importa","Ya construí producto a escala corporativa, con presupuesto real y presión real de resultados. Sé lo que funciona cuando el error sale caro.",
+     "Sé lo que funciona cuando el error sale caro — y lo que no."],
+    ["Joyn","El <b>turnaround</b> de una SaaS en Bélgica",
+     "Contexto","CPO y CMO en una plataforma de fidelización B2B belga, con pérdidas recurrentes y un producto sin tracción.",
+     "Qué hice",["Rediseño de producto y propuesta de valor","Reposicionamiento de mercado","Construcción de equipo y procesos de producto","Liderazgo del turnaround: de pérdidas a break-even"],
+     "El resultado","Entré en una empresa que perdía dinero y salí con ella en positivo. Sé lo que es trabajar con lo que hay.",
+     "Sé lo que es hacer crecer una empresa con lo que hay, no con lo ideal."]
+  ],
+  abouttag:"Quién está a tu lado",
+  portraitph:"[ foto de Claudio ]",
+  abouth2:"Soy Claudio Majzels.",
+  about:[
+    "Ejecutivo de producto y crecimiento, con más de 10 años en empresas reales — desde grandes corporaciones hasta las startups que fundé.",
+    "Pasé por Shell construyendo producto para millones de usuarios. Fui CPO y CMO de una SaaS belga y di la vuelta al marcador, de pérdidas a break-even. Hoy soy fundador de Biffy, donde uso cada día las mismas herramientas que ofrezco a mis clientes.",
+    "No soy un consultor de teoría. Sigo en el campo — equivocándome, ajustando y evolucionando junto a quien necesita resultados."
+  ],
+  aboutfinal:"Cuando me contratas, no recibes un informe. Recibes a alguien que se va a preocupar por el resultado como si el negocio fuera suyo.",
+  counters:[["10+","años de experiencia"],["2M+","usuarios alcanzados"],["3","países"],["1","patente"]],
+  faqtag:"Dudas",
+  faqh2:"Lo que <em>todos</em> preguntan",
+  faqs:[
+    ["¿Qué diferencia hay entre contratarte a ti y a una consultoría?","Una consultoría te entrega un documento y se va. Yo me quedo a tu lado y lo implemento contigo. La entrega no es un papel — es algo funcionando."],
+    ["¿Cuánto cuesta?","Depende de lo que tu empresa necesite. Por eso la primera conversación es gratis: salgo de ella diciéndote con claridad qué haría y cómo. Sin compromiso."],
+    ["¿Y si no funciona?","Para eso existe la Radiografía: un diagnóstico corto para que entiendas exactamente qué vas a recibir antes de cualquier compromiso mayor."],
+    ["¿Trabajas con mi sector?","Los procesos digitales son transversales. He trabajado con movilidad, fidelización, food D2C y retail. Lo que importa es el problema, no el sector."],
+    ["¿Mi equipo se resiste a la tecnología. Cómo lo gestionas?","Por eso todo trabajo incluye acompañamiento. Implementar es el principio — asegurar que el equipo lo adopte es parte del servicio."],
+    ["¿Desde dónde trabajas?","España, Brasil y clientes de habla inglesa. Trabajo en remoto, con cercanía real."]
+  ],
+  finaltag:"Empecemos",
+  finalh2:"Tu competencia ya está en <em>2026</em>.",
+  finalp:"La primera conversación es gratis y sales de ella con claridad. Cuéntame cuál es el mayor cuello de botella de tu empresa ahora mismo.",
+  finalcta:"Escríbeme por WhatsApp",
+  footmeta:"Socio de operaciones · España · Brasil",
+  fab:"Hablemos"
+},
+pt:{
+  nav1:"Serviços",nav2:"Por que eu",nav3:"Casos",nav4:"Claudio",navcta:"Vamos conversar",
+  eyebrow:"Sócio de operação · IA + automação",
+  h1:"Sua empresa ainda trabalha como se fosse <em>2015</em>.",
+  herosub:"Não é culpa sua. É que até agora <strong>ninguém ficou do seu lado</strong> pra mudar isso de verdade. Eu uso IA e automação pra resolver o que trava o seu negócio — e fico junto enquanto a coisa evolui.",
+  herocta1:"Vamos conversar — a primeira conversa é grátis",
+  herocta2:"Ver casos reais",
+  paintag:"O problema",
+  painh2:"Você sabe que algo precisa mudar. Mas <em>algo</em> te trava.",
+  pain:[
+    ["01","\u201cNão tenho tempo. O dia a dia engole tudo.\u201d"],
+    ["02","\u201cNão sei por onde começar. É tecnologia demais.\u201d"],
+    ["03","\u201cJá contratei consultoria e não deu em nada.\u201d"],
+    ["04","\u201cTenho medo de gastar e não ver retorno.\u201d"],
+    ["05","\u201cMinha equipe não adota as ferramentas novas.\u201d"],
+    ["06","\u201cNão confio em quem nunca foi empreendedor.\u201d"]
+  ],
+  cattag:"A diferença",
+  catstatement:"Não te entrego um relatório. <b>Fico do seu lado</b> até a coisa funcionar de verdade.",
+  vsthem:"Consultor tradicional",
+  vs:[
+    ["Entrega um documento","Entrega resultado funcionando"],
+    ["Trabalha de fora","Trabalha junto, por dentro"],
+    ["O projeto começa e acaba","Fica enquanto você precisar"],
+    ["Caro e genérico","Cirúrgico e do tamanho da sua empresa"],
+    ["Nunca foi empreendedor","Já esteve exatamente no seu lugar"]
+  ],
+  prodtag:"Como eu trabalho",
+  prodh2:"Três jeitos de começar. <em>Uma só direção.</em>",
+  prodintro:"Você entra pequeno e sem risco. Sobe quando vê que funciona. Sem surpresa, sem amarra.",
+  journey:["Raio-X","O Salto","Do Seu Lado"],
+  prods:[
+    ["Passo 01","Raio-X","O diagnóstico",
+     "Duas semanas dentro da sua operação pra enxergar com clareza o que está custando dinheiro — e onde está a oportunidade real.",
+     ["Imersão nos seus processos atuais","Mapa dos gargalos","3 melhorias priorizadas por impacto"],
+     "Começar por aqui"],
+    ["Passo 02","O Salto","A implementação",
+     "Um problema resolvido de ponta a ponta. Escopo fechado, prazo claro. Eu construo, deixo funcionando e acompanho a adoção.",
+     ["WhatsApp que vende sozinho, um agente de IA, um sistema substituído","Prazo e escopo definidos desde o dia um","Acompanhamento incluído após a entrega"],
+     "Desenhar o escopo"],
+    ["Passo 03","Do Seu Lado","O acompanhamento",
+     "O sócio de operação presente todos os meses. Evoluo sua empresa de forma contínua — por menos do que custa um sênior em tempo integral.",
+     ["Reuniões estratégicas toda semana","Implementação contínua e melhoria","Acesso direto via WhatsApp"],
+     "Ver se a gente encaixa"]
+  ],
+  captag:"Capacidades",
+  caph2:"O que eu <em>resolvo</em>",
+  caps:[
+    ["WhatsApp que vende","Fluxos de venda e atendimento automatizados sobre a API do WhatsApp Business.","chat"],
+    ["Agentes de IA","Funcionários digitais que executam tarefas reais: venda, qualificação, suporte.","bot"],
+    ["Adeus sistema legado","Substituição progressiva e cirúrgica de sistemas antigos, sem parar a operação.","layers"],
+    ["Processos sem desperdício","Automatizo as tarefas repetitivas que comem o tempo da equipe.","zap"],
+    ["Transformação de verdade","Não é comprar uma ferramenta. É mudar como a empresa opera.","compass"]
+  ],
+  stacknote:"Construído sobre <span>Claude API · n8n · Supabase · WhatsApp Business API · Node.js</span>",
+  sweettag:"O sweet spot",
+  vennprod:"Visão de produto",
+  vennbiz:"Cabeça de negócio",
+  venncore:"Onde eu vivo",
+  sweeth2:"A maioria escolhe <em>uma</em> das duas. Eu vivo nas duas.",
+  sweetp1:"O consultor de TI entende de sistema, mas não de negócio. O consultor de gestão entende de processo, mas não de tecnologia. E você acaba traduzindo entre os dois.",
+  sweetp2:"Eu construo produto, entendo de ROI e ainda sou empreendedor hoje. <strong>Esse cruzamento é exatamente o que sua empresa precisa</strong> — e o que quase nenhuma consultoria tem.",
+  casetag:"Casos reais",
+  caseh2:"Não é <em>teoria</em>. Eu construí com as próprias mãos.",
+  caseintro:"Cada caso é algo que desenhei, construí e deixei funcionando — na minha própria empresa ou em corporações de escala real.",
+  cases:[
+    ["Biffy","WhatsApp Commerce construído <b>do zero</b>",
+     "Contexto","Sou fundador da Biffy, marca de carne grass-fed premium no Rio de Janeiro. A operação girava em torno de WhatsApp manual, com a equipe respondendo tudo na mão.",
+     "O que eu construí",["Canal de vendas 100% via WhatsApp com fluxo de pedidos","Catálogo digital integrado","Automação de confirmação, cobrança e entrega","Base de clientes com histórico de compras"],
+     "O resultado","Uma operação de vendas funcionando sem equipe comercial dedicada, com rastreabilidade total e base para campanhas de reativação segmentadas.",
+     "Construí do zero o canal de vendas da minha própria empresa. É exatamente isso que faço pelo seu negócio."],
+    ["Jerry","O <b>agente de IA</b> que qualifica e converte",
+     "Contexto","A Biffy recebia leads de vários canais, sem critério de priorização nem follow-up consistente. Os leads esfriavam.",
+     "O que eu construí",["Agente de IA sobre Claude API + n8n + Supabase","Classificação de leads por temperatura: Fervendo / Quente / Pelando","Fluxos de WhatsApp distintos por tier","Dashboard Kanban com estado em tempo real"],
+     "O resultado","Zero leads perdidos por falta de follow-up. A equipe humana foca só no que está qualificado. Ciclo de venda mais curto.",
+     "Jerry não é um chatbot. É um agente que trabalha enquanto você dorme."],
+    ["Shell Box","Produto digital para <b>2 milhões</b> de usuários",
+     "Contexto","Liderei a construção do Shell Box na Shell Brasil — o app de pagamento de combustível pelo celular.",
+     "O que eu construí",["Produto digital de zero a 2M+ de usuários ativos","Integração de pagamento em postos Shell por todo o Brasil","Inovação registrada em patente de pagamento mobile"],
+     "Por que isso importa","Já construí produto em escala corporativa, com orçamento real e pressão real de resultado. Sei o que funciona quando o erro custa caro.",
+     "Sei o que funciona quando o erro custa caro — e o que não funciona."],
+    ["Joyn","O <b>turnaround</b> de uma SaaS na Bélgica",
+     "Contexto","CPO e CMO numa plataforma de fidelidade B2B belga, com prejuízo recorrente e produto sem tração.",
+     "O que eu fiz",["Redesenho de produto e proposta de valor","Reposicionamento de mercado","Construção de time e processos de produto","Liderança do turnaround: do prejuízo ao break-even"],
+     "O resultado","Entrei numa empresa perdendo dinheiro e saí com ela no azul. Sei o que é ter que fazer com o que tem.",
+     "Sei o que é fazer uma empresa crescer com o que tem, não com o ideal."]
+  ],
+  abouttag:"Quem está do seu lado",
+  portraitph:"[ foto do Claudio ]",
+  abouth2:"Eu sou Claudio Majzels.",
+  about:[
+    "Executivo de produto e crescimento, com mais de 10 anos em empresas reais — das grandes corporações às startups que fundei.",
+    "Passei pela Shell construindo produto para milhões de usuários. Fui CPO e CMO de uma SaaS belga e virei o jogo, do prejuízo ao break-even. Hoje sou fundador da Biffy, onde uso todo dia as mesmas ferramentas que ofereço aos meus clientes.",
+    "Não sou consultor de teoria. Ainda estou no campo — errando, ajustando e evoluindo junto com quem precisa de resultado."
+  ],
+  aboutfinal:"Quando você me contrata, não recebe um relatório. Recebe alguém que vai se importar com o resultado como se o negócio fosse dele.",
+  counters:[["10+","anos de experiência"],["2M+","usuários alcançados"],["3","países"],["1","patente"]],
+  faqtag:"Dúvidas",
+  faqh2:"O que <em>todo mundo</em> pergunta",
+  faqs:[
+    ["Qual a diferença de te contratar vs uma consultoria?","Uma consultoria entrega um documento e vai embora. Eu fico do seu lado e implemento junto. A entrega não é um papel — é algo funcionando."],
+    ["Quanto custa?","Depende do que sua empresa precisa. Por isso a primeira conversa é grátis: saio dela te dizendo, com clareza, o que faria e como. Sem compromisso."],
+    ["E se não funcionar?","Pra isso existe o Raio-X: um diagnóstico curto pra você entender exatamente o que vai receber antes de qualquer compromisso maior."],
+    ["Você atende meu setor?","Processos digitais são transversais. Já trabalhei com mobilidade, fidelidade, food D2C e varejo. O que importa é o problema, não o setor."],
+    ["Minha equipe resiste a tecnologia. Como fica?","Por isso todo trabalho inclui acompanhamento. Implementar é o começo — garantir que a equipe adote é parte do serviço."],
+    ["De onde você trabalha?","Espanha, Brasil e clientes de língua inglesa. Trabalho remoto, com proximidade real."]
+  ],
+  finaltag:"Vamos começar",
+  finalh2:"Seu concorrente já está em <em>2026</em>.",
+  finalp:"A primeira conversa é grátis e você sai dela com clareza. Me conta qual é o maior gargalo da sua empresa agora.",
+  finalcta:"Me chama no WhatsApp",
+  footmeta:"Sócio de operação · Espanha · Brasil",
+  fab:"Conversar"
+},
+en:{
+  nav1:"Services",nav2:"Why me",nav3:"Cases",nav4:"Claudio",navcta:"Let's talk",
+  eyebrow:"Embedded operator · AI + automation",
+  h1:"Your company still runs like it's <em>2015</em>.",
+  herosub:"That's not on you. Until now, <strong>no one stayed alongside you</strong> to actually change it. I use AI and automation to fix what's holding your business back — and I stay with you while it evolves.",
+  herocta1:"Let's talk — the first conversation is free",
+  herocta2:"See real cases",
+  paintag:"The problem",
+  painh2:"You know something has to change. But <em>something</em> holds you back.",
+  pain:[
+    ["01","\u201cI have no time. The day-to-day eats everything.\u201d"],
+    ["02","\u201cI don't know where to start. Too much tech.\u201d"],
+    ["03","\u201cI hired a consultancy once and it led nowhere.\u201d"],
+    ["04","\u201cI'm afraid to spend and see no return.\u201d"],
+    ["05","\u201cMy team won't adopt the new tools.\u201d"],
+    ["06","\u201cI don't trust people who never ran a business.\u201d"]
+  ],
+  cattag:"The difference",
+  catstatement:"I don't hand you a report. I <b>stay alongside you</b> until it actually works.",
+  vsthem:"Traditional consultant",
+  vs:[
+    ["Hands you a document","Hands you a working result"],
+    ["Works from the outside","Works inside, with you"],
+    ["Project starts and ends","Stays as long as you need"],
+    ["Expensive and generic","Surgical and sized to your company"],
+    ["Never ran a business","Has stood exactly where you stand"]
+  ],
+  prodtag:"How I work",
+  prodh2:"Three ways to start. <em>One direction.</em>",
+  prodintro:"You start small and low-risk. You scale up when you see it works. No surprises, no lock-in.",
+  journey:["The Scan","The Build","Alongside"],
+  prods:[
+    ["Step 01","The Scan","The diagnosis",
+     "Two weeks inside your operation to see clearly what's costing you money — and where the real opportunity is.",
+     ["Deep dive into your current processes","A map of the bottlenecks","3 fixes prioritised by impact"],
+     "Start here"],
+    ["Step 02","The Build","The implementation",
+     "One problem solved end to end. Fixed scope, clear timeline. I build it, leave it running and support the adoption.",
+     ["A selling WhatsApp, an AI agent, a replaced system","Scope and timeline set from day one","Post-delivery support included"],
+     "Design the scope"],
+    ["Step 03","Alongside","The partnership",
+     "Your embedded operator, present every month. I evolve your company continuously — for less than a full-time senior hire.",
+     ["Weekly strategic meetings","Continuous implementation and improvement","Direct access over WhatsApp"],
+     "See if we fit"]
+  ],
+  captag:"Capabilities",
+  caph2:"What I <em>solve</em>",
+  caps:[
+    ["A selling WhatsApp","Automated sales and support flows on the WhatsApp Business API.","chat"],
+    ["AI agents","Digital employees that run real tasks: sales, qualification, support.","bot"],
+    ["Goodbye legacy system","Progressive, surgical replacement of old systems — without stopping operations.","layers"],
+    ["Waste-free processes","I automate the repetitive tasks eating your team's time.","zap"],
+    ["Real transformation","It's not buying a tool. It's changing how the company operates.","compass"]
+  ],
+  stacknote:"Built on <span>Claude API · n8n · Supabase · WhatsApp Business API · Node.js</span>",
+  sweettag:"The sweet spot",
+  vennprod:"Product vision",
+  vennbiz:"Business mind",
+  venncore:"Where I live",
+  sweeth2:"Most people pick <em>one</em> of the two. I live in both.",
+  sweetp1:"IT consultants know systems but not business. Management consultants know process but not technology. And you end up translating between the two.",
+  sweetp2:"I build product, I understand ROI, and I'm still a founder today. <strong>That overlap is exactly what your company needs</strong> — and what almost no consultancy has.",
+  casetag:"Real cases",
+  caseh2:"Not <em>theory</em>. I built it with my own hands.",
+  caseintro:"Each case is something I designed, built and left running — in my own company or in corporations at real scale.",
+  cases:[
+    ["Biffy","WhatsApp Commerce built <b>from scratch</b>",
+     "Context","I'm the founder of Biffy, a premium grass-fed meat brand in Rio de Janeiro. The operation ran on manual WhatsApp, with the team answering everything by hand.",
+     "What I built",["A 100% WhatsApp sales channel with a structured order flow","An integrated digital catalogue","Automated confirmation, billing and delivery","A customer base with full purchase history"],
+     "The result","A sales operation running without a dedicated sales team — full traceability and a base for segmented re-engagement campaigns.",
+     "I built my own company's sales channel from scratch. That's exactly what I do for yours."],
+    ["Jerry","The <b>AI agent</b> that qualifies and converts",
+     "Context","Biffy received leads from several channels with no prioritisation and no consistent follow-up. Leads went cold.",
+     "What I built",["An AI agent on Claude API + n8n + Supabase","Lead scoring by temperature: Boiling / Hot / Warm","Distinct WhatsApp flows per tier","A Kanban dashboard with real-time lead state"],
+     "The result","Zero leads lost to missed follow-up. The human team focuses only on qualified leads. A shorter sales cycle.",
+     "Jerry isn't a chatbot. It's an agent that works while you sleep."],
+    ["Shell Box","A digital product for <b>2 million</b> users",
+     "Context","I led the build of Shell Box at Shell Brazil — the mobile fuel-payment app.",
+     "What I built",["A digital product from zero to 2M+ active users","Payment integration across Shell stations nationwide","Innovation registered in a mobile-payment patent"],
+     "Why it matters to you","I've built product at corporate scale, with real budgets and real pressure. I know what works when mistakes are expensive.",
+     "I know what works when mistakes are expensive — and what doesn't."],
+    ["Joyn","The <b>turnaround</b> of a SaaS in Belgium",
+     "Context","CPO and CMO at a Belgian B2B loyalty platform, with recurring losses and a product without traction.",
+     "What I did",["Product and value-proposition redesign","Market repositioning","Built the team and product processes","Led the turnaround: from losses to break-even"],
+     "The result","I joined a company losing money and left it in the black. I know how to work with what's there.",
+     "I know how to grow a company with what's there, not with the ideal."]
+  ],
+  abouttag:"Who's alongside you",
+  portraitph:"[ photo of Claudio ]",
+  abouth2:"I'm Claudio Majzels.",
+  about:[
+    "A product and growth executive with 10+ years in real companies — from large corporations to the startups I founded.",
+    "I spent time at Shell building product for millions of users. I was CPO and CMO of a Belgian SaaS and turned it from losses to break-even. Today I'm the founder of Biffy, where I use every day the same tools I offer my clients.",
+    "I'm not a theory consultant. I'm still on the field — making mistakes, adjusting and evolving alongside people who need results."
+  ],
+  aboutfinal:"When you hire me, you don't get a report. You get someone who cares about the result as if the business were his own.",
+  counters:[["10+","years of experience"],["2M+","users reached"],["3","countries"],["1","patent"]],
+  faqtag:"Questions",
+  faqh2:"What <em>everyone</em> asks",
+  faqs:[
+    ["What's the difference between hiring you and a consultancy?","A consultancy hands you a document and leaves. I stay alongside you and implement it with you. The deliverable isn't paper — it's something working."],
+    ["How much does it cost?","It depends on what your company needs. That's why the first conversation is free: I leave it telling you clearly what I'd do and how. No commitment."],
+    ["What if it doesn't work?","That's what The Scan is for: a short diagnosis so you understand exactly what you'll get before any bigger commitment."],
+    ["Do you work with my sector?","Digital processes are cross-cutting. I've worked in mobility, loyalty, food D2C and retail. What matters is the problem, not the sector."],
+    ["My team resists technology. How do you handle that?","That's why every engagement includes support. Implementing is the start — making sure the team adopts it is part of the service."],
+    ["Where do you work from?","Spain, Brazil and English-speaking clients. I work remote-first, with real closeness."]
+  ],
+  finaltag:"Let's start",
+  finalh2:"Your competitor is already in <em>2026</em>.",
+  finalp:"The first conversation is free and you leave it with clarity. Tell me the biggest bottleneck in your company right now.",
+  finalcta:"Message me on WhatsApp",
+  footmeta:"Embedded operator · Spain · Brazil",
+  fab:"Let's talk"
+}
+};
+
+/* ---- icons ---- */
+const ICONS={
+  chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  bot:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4M8 4h8M9 14h.01M15 14h.01"/>',
+  layers:'<path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>',
+  zap:'<path d="M13 2 3 14h7l-1 8 10-12h-7z"/>',
+  compass:'<circle cx="12" cy="12" r="10"/><path d="m16 8-4 8-4-2 2-6z"/>'
+};
+const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="#FF3D00" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>';
+const PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="#FF3D00" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>';
+
+/* ---- render ---- */
+let LANG='es';
+function render(lang){
+  LANG=lang;
+  const d=T[lang];
+  document.documentElement.lang=lang;
+
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const k=el.dataset.t;
+    if(d[k]!==undefined && typeof d[k]==='string') el.innerHTML=d[k];
+  });
+  document.querySelectorAll('.wa').forEach(a=>a.href=WA[lang]);
+
+  // pain
+  document.getElementById('painGrid').innerHTML=d.pain.map((p,i)=>
+    `<div class="pain-card reveal d${(i%3)+1}"><div class="n">${p[0]}</div><div class="q">${p[1]}</div></div>`).join('');
+
+  // vs
+  document.getElementById('vsThem').innerHTML=d.vs.map(r=>
+    `<div class="vs-row">${X}<span>${r[0]}</span></div>`).join('');
+  document.getElementById('vsUs').innerHTML=d.vs.map(r=>
+    `<div class="vs-row">${CHK}<span>${r[1]}</span></div>`).join('');
+
+  // journey
+  document.getElementById('journey').innerHTML=
+    d.journey.map(j=>`<b>${j}</b>`).join('<span class="arr">→</span>');
+
+  // products
+  const prodSlugs=['radiografia','salto','alongside'];
+  document.getElementById('prodGrid').innerHTML=d.prods.map((p,i)=>
+    `<div class="prod reveal d${i+1}">
+       <figure class="prod-img"><img src="img/product-${prodSlugs[i]}.jpg" alt="" onerror="this.parentElement.style.display='none'"></figure>
+       <div class="prod-step">${p[0]}</div>
+       <div class="prod-name">${p[1]}</div>
+       <div class="prod-kicker">${p[2]}</div>
+       <p class="prod-desc">${p[3]}</p>
+       <ul class="prod-feat">${p[4].map(f=>`<li>${f}</li>`).join('')}</ul>
+       <a class="prod-link wa" href="${WA[lang]}">${p[5]} →</a>
+     </div>`).join('');
+
+  // caps
+  document.getElementById('capGrid').innerHTML=d.caps.map((c,i)=>
+    `<div class="cap reveal d${(i%5)+1}">
+       <div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[c[2]]}</svg></div>
+       <h3>${c[0]}</h3><p>${c[1]}</p>
+     </div>`).join('');
+
+  // cases
+  const caseImgs={biffy:'img/case-biffy.webp',jerry:'img/case-jerry.png',shellbox:'img/case-shellbox.jpg',joyn:'img/case-joyn.jpg'};
+  const caseSlugs=['biffy','jerry','shellbox','joyn'];
+  document.getElementById('caseList').innerHTML=d.cases.map((c,i)=>
+    `<div class="case" data-case="${i}">
+       <div class="case-bar">
+         <span class="case-tag">${c[0]}</span>
+         <div class="case-title">${c[1]}</div>
+         <div class="case-toggle">${PLUS}</div>
+       </div>
+       <div class="case-body"><div class="case-inner">
+         <figure class="case-img" style="grid-column:1/-1"><img src="${caseImgs[caseSlugs[i]]}" alt="" onerror="this.parentElement.style.display='none'"></figure>
+         <div class="case-block"><h4>${c[2]}</h4><p>${c[3]}</p></div>
+         <div class="case-block"><h4>${c[4]}</h4><ul>${c[5].map(x=>`<li>${x}</li>`).join('')}</ul></div>
+         <div class="case-block" style="grid-column:1/-1"><h4>${c[6]}</h4><p>${c[7]}</p></div>
+         <div class="case-quote">${c[8]}</div>
+       </div></div>
+     </div>`).join('');
+  bindCases();
+
+  // about
+  document.getElementById('aboutBody').innerHTML=d.about.map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('counters').innerHTML=d.counters.map(c=>
+    `<div class="counter"><div class="num">${c[0]}</div><div class="cap-l">${c[1]}</div></div>`).join('');
+
+  // faq
+  document.getElementById('faqList').innerHTML=d.faqs.map(f=>
+    `<div class="faq-item">
+       <div class="faq-q"><span>${f[0]}</span><div class="pm"></div></div>
+       <div class="faq-a"><p>${f[1]}</p></div>
+     </div>`).join('');
+  bindFaq();
+
+  observeReveals();
+}
+
+function bindCases(){
+  document.querySelectorAll('.case-bar').forEach(bar=>{
+    bar.onclick=()=>bar.parentElement.classList.toggle('open');
+  });
+}
+function bindFaq(){
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.onclick=()=>q.parentElement.classList.toggle('open');
+  });
+}
+
+/* ---- reveal observer ---- */
+let revObs;
+function observeReveals(){
+  if(revObs) revObs.disconnect();
+  revObs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revObs.unobserve(e.target);}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+}
+
+/* ---- venn animation ---- */
+const venn=document.getElementById('venn');
+new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting)venn.classList.add('open');});
+},{threshold:.4}).observe(venn);
+
+/* ---- counter animation ---- */
+function animateCounters(){
+  document.querySelectorAll('.counter .num').forEach(el=>{
+    const txt=el.textContent;
+    const m=txt.match(/[\d.]+/);
+    if(!m)return;
+    const target=parseFloat(m[0]);
+    const suffix=txt.replace(m[0],'');
+    let cur=0;const step=target/40;
+    const t=setInterval(()=>{
+      cur+=step;
+      if(cur>=target){cur=target;clearInterval(t);}
+      el.textContent=(target>=10?Math.round(cur):cur.toFixed(0))+suffix;
+    },24);
+  });
+}
+let counted=false;
+new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting&&!counted){counted=true;animateCounters();}});
+},{threshold:.5}).observe(document.querySelector('.about'));
+
+/* ---- nav scroll ---- */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',scrollY>40);
+});
+
+/* ---- lang switch ---- */
+document.querySelectorAll('.lang button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.lang button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    render(b.dataset.lang);
+  };
+});
+
+/* ---- init: detect browser language ---- */
+(function(){
+  const nl=(navigator.language||'es').slice(0,2);
+  const start=['es','pt','en'].includes(nl)?nl:'es';
+  document.querySelectorAll('.lang button').forEach(x=>{
+    x.classList.toggle('active',x.dataset.lang===start);
+  });
+  render(start);
+})();
+</script>
+</body>
+</html>
